@@ -26,7 +26,7 @@ def predict():
     img2.save(path2)
 
     try:
-        result = DeepFace.verify(path1, path2)
+        result = DeepFace.verify(path1, path2, model_name='ArcFace', distance_metric='cosine')
         return jsonify({'verified': result['verified'], 'distance': result['distance']})
     except Exception as e:
         return jsonify({'error': str(e)}), 500
