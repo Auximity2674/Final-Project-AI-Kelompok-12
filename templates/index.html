@@ -475,6 +475,30 @@
           </div>
         </div>
 
+        <!-- Model and Method selection -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <div>
+            <label for="modelSelect" class="block mb-2 font-semibold text-primary-400 dark:text-primary-600">Select Model</label>
+            <select id="modelSelect" name="modelSelect" class="w-full rounded-lg border border-primary-400 dark:border-primary-600 bg-slate-800/50 dark:bg-white/50 text-gray-200 dark:text-gray-900 p-2">
+              <option value="VGG-Face">VGG-Face</option>
+              <option value="Facenet">Facenet</option>
+              <option value="OpenFace">OpenFace</option>
+              <option value="DeepFace">DeepFace</option>
+              <option value="DeepID">DeepID</option>
+              <option value="Dlib">Dlib</option>
+              <option value="ArcFace" selected>ArcFace</option>
+            </select>
+          </div>
+          <div>
+            <label for="methodSelect" class="block mb-2 font-semibold text-primary-400 dark:text-primary-600">Select Distance Metric</label>
+            <select id="methodSelect" name="methodSelect" class="w-full rounded-lg border border-primary-400 dark:border-primary-600 bg-slate-800/50 dark:bg-white/50 text-gray-200 dark:text-gray-900 p-2">
+              <option value="cosine" selected>Cosine</option>
+              <option value="euclidean">Euclidean</option>
+              <option value="euclidean_l2">Euclidean L2</option>
+            </select>
+          </div>
+        </div>
+
         <!-- Predict button -->
         <div class="text-center mt-8">
           <button id="predictBtn" type="submit" class="tooltip px-8 py-3 rounded-xl font-semibold bg-gradient-to-r from-primary-500 to-secondary-500 dark:from-primary-600 dark:to-secondary-600 text-white hover:scale-105 transition-all duration-300 shadow-lg flex items-center justify-center space-x-2 focus:outline-none focus:ring-2 focus:ring-primary-400" aria-label="Start comparison">
@@ -496,13 +520,59 @@
         <div class="border-t border-gray-700 dark:border-gray-300 pt-6">
           <h2 class="text-2xl font-bold text-center mb-6 text-primary-700 dark:text-primary-400">Analysis Results</h2>
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div id="resultCard" class="glass dark:glass-light rounded-xl p-6 flex flex-col items-center justify-center">
+          <div id="resultCard" class="glass dark:glass-light rounded-xl p-6 flex flex-col items-center justify-center">
               <div id="resultIconContainer" class="w-16 h-16 rounded-full flex items-center justify-center mb-4 text-3xl"></div>
               <div id="result" class="text-xl font-semibold text-center"></div>
               <div id="resultDetails" class="mt-4 text-sm text-primary-600 dark:text-primary-300 text-center"></div>
+<div id="modelUsed" class="mt-2 text-sm text-primary-600 dark:text-primary-300 text-center"></div>
+<div id="methodUsed" class="mt-2 text-sm text-primary-600 dark:text-primary-300 text-center"></div>
               <div id="similarityPercentage" class="mt-2 text-sm text-primary-700 dark:text-primary-400 font-semibold text-center"></div>
               <div id="similarityInterpretation" class="mt-1 text-xs text-primary-500 dark:text-primary-300 italic text-center"></div>
               <div id="thresholdValue" class="mt-1 text-xs text-primary-500 dark:text-primary-300 italic text-center">Threshold: 0.60</div>
+              <div id="processingTime" class="mt-1 text-xs text-primary-500 dark:text-primary-300 italic text-center"></div>
+              <div id="summaryLikelihood" class="mt-1 text-xs text-primary-500 dark:text-primary-300 italic text-center"></div>
+              <div class="w-full mt-4">
+                <h4 class="text-center font-semibold mb-2">Per-Feature Similarity Scores</h4>
+                <div class="space-y-3 max-w-md mx-auto">
+                  <div>
+                    <div class="flex justify-between mb-1">
+                      <span>Eyes</span>
+                      <span id="scoreEyes" class="font-semibold"></span>
+                    </div>
+                    <div class="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-4">
+                      <div id="progressEyes" class="bg-primary-500 h-4 rounded-full" style="width: 0%;"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between mb-1">
+                      <span>Nose</span>
+                      <span id="scoreNose" class="font-semibold"></span>
+                    </div>
+                    <div class="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-4">
+                      <div id="progressNose" class="bg-primary-500 h-4 rounded-full" style="width: 0%;"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between mb-1">
+                      <span>Mouth</span>
+                      <span id="scoreMouth" class="font-semibold"></span>
+                    </div>
+                    <div class="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-4">
+                      <div id="progressMouth" class="bg-primary-500 h-4 rounded-full" style="width: 0%;"></div>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="flex justify-between mb-1">
+                      <span>Jaw</span>
+                      <span id="scoreJaw" class="font-semibold"></span>
+                    </div>
+                    <div class="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-4">
+                      <div id="progressJaw" class="bg-primary-500 h-4 rounded-full" style="width: 0%;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div id="heatmapExplanation" class="mt-4 text-center text-sm text-primary-600 dark:text-primary-300 italic"></div>
               <div id="imagePreviews" class="mt-4 flex justify-center gap-4">
                 <img id="previewResult1" alt="Image 1 Preview" class="w-24 h-24 object-cover rounded-lg border-2 border-primary-400 dark:border-primary-600 shadow-md hidden" />
                 <img id="previewResult2" alt="Image 2 Preview" class="w-24 h-24 object-cover rounded-lg border-2 border-secondary-400 dark:border-secondary-600 shadow-md hidden" />
@@ -1062,6 +1132,12 @@
       hideResults();
       
       const formData = new FormData();
+
+      // Append selected model and method
+      const modelSelect = document.getElementById('modelSelect');
+      const methodSelect = document.getElementById('methodSelect');
+      formData.append('model_name', modelSelect.value);
+      formData.append('distance_metric', methodSelect.value);
       
       // Validate inputs
       if (currentMode === 'upload') {
@@ -1084,6 +1160,7 @@
       loadingOverlay.classList.remove('hidden');
       
       // Simulated API call (replace with actual fetch in production)
+      /*
       setTimeout(() => {
         // Hide loading UI
         loadingOverlay.classList.add('hidden');
@@ -1095,8 +1172,9 @@
         // Display results
         displayResults(verified, distance);
       }, 1500);
+      */
       
-      /* In production, use actual API:
+      // Use actual API:
       fetch('/predict', {
         method: 'POST',
         body: formData
@@ -1105,7 +1183,7 @@
       .then(data => {
         loadingOverlay.classList.add('hidden');
         if (data.verified !== undefined) {
-          displayResults(data.verified, data.distance);
+          displayResults(data);
         } else {
           showNotification('Error: ' + data.error, 'error');
         }
@@ -1115,7 +1193,6 @@
         showNotification('Prediction failed. Please try again.', 'error');
         console.error("Error:", error);
       });
-      */
     }
 
     // Display results
@@ -1163,7 +1240,14 @@
         resultCard.classList.add('border-red-500', 'dark:border-red-400');
         resultCard.classList.remove('border-green-500', 'dark:border-green-400');
       }
-      
+       // Dapatkan nilai model dan metode yang dipilih
+        const modelSelect = document.getElementById('modelSelect');
+        const methodSelect = document.getElementById('methodSelect');
+        const selectedModel = modelSelect.options[modelSelect.selectedIndex].text;
+        const selectedMethod = methodSelect.options[methodSelect.selectedIndex].text;
+      // Display model and method used
+        document.getElementById('modelUsed').textContent = `Model Used: ${model_name}`;
+        document.getElementById('methodUsed').textContent = `Distance Metric: ${distance_metric}`;
       // Display similarity chart
       displaySimilarityChart(distance);
 
@@ -1230,10 +1314,11 @@
       });
     });
 
-  // Accessibility enhancement: Allow Enter key to trigger compare
-  predictBtn.addEventListener('keyup', (e) => {
-    if (e.key === 'Enter') predict();
-  });
+    // Accessibility enhancement: Allow Enter key to trigger compare
+    // Removed keyup event listener to prevent duplicate predict calls
+    // predictBtn.addEventListener('keyup', (e) => {
+    //   if (e.key === 'Enter') predict();
+    // });
 
   // Add event listeners for file inputs to update previews
   image1.addEventListener('change', () => {
@@ -1451,10 +1536,10 @@
 
     // Override displayResults to store last results for sharing/exporting
     const originalDisplayResults = displayResults;
-    displayResults = function(verified, distance) {
-      lastVerified = verified;
-      lastDistance = distance;
-      originalDisplayResults(verified, distance);
+    displayResults = function(data) {
+      lastVerified = data.verified;
+      lastDistance = data.distance;
+      originalDisplayResults(data);
     };
 
     const similarityPercentageElem = document.getElementById('similarityPercentage');
@@ -1462,6 +1547,8 @@
     const thresholdValueElem = document.getElementById('thresholdValue');
     const previewResult1 = document.getElementById('previewResult1');
     const previewResult2 = document.getElementById('previewResult2');
+
+    // Remove duplicate displayResults function definitions
   </script>
   <style>
     #headerCard.hidden-up {
@@ -1496,6 +1583,117 @@
         }
       });
     })();
+  </script>
+  <script>
+    // Update displayResults to handle new data fields
+    function displayResults(data) {
+      // Show result container
+      resultContainer.classList.remove('hidden');
+      
+      // Scroll to results
+      resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      
+      const verified = data.verified;
+      const distance = data.distance;
+      const model_name = data.model_name;
+      const distance_metric = data.distance_metric;
+      const processing_time = data.processing_time;
+      const per_feature_scores = data.per_feature_scores;
+      const summary_likelihood = data.summary_likelihood;
+      const heatmap_explanation = data.heatmap_explanation;
+
+      // Format distance to 2 decimal places
+      const formattedDistance = distance.toFixed(2);
+      const similarityPercentage = Math.round((1 - Math.min(Math.max(distance, 0), 1)) * 100);
+      let interpretation = '';
+      if (similarityPercentage >= 80) {
+        interpretation = 'High similarity';
+      } else if (similarityPercentage >= 50) {
+        interpretation = 'Moderate similarity';
+      } else {
+        interpretation = 'Low similarity';
+      }
+
+      // Update result text and styling
+      if (verified) {
+        resultDiv.innerHTML = `<span class="text-green-500 dark:text-green-400">✓ Match Confirmed</span>`;
+        resultDetails.textContent = `Similarity distance: ${formattedDistance} (below threshold of 0.60)`;
+        resultIconContainer.innerHTML = `<i class="fas fa-check-circle text-green-500 dark:text-green-400"></i>`;
+        resultIconContainer.className = 'w-16 h-16 rounded-full flex items-center justify-center mb-4 text-3xl bg-green-100 dark:bg-green-900 pulse-match';
+        resultCard.classList.add('border-green-500', 'dark:border-green-400');
+        resultCard.classList.remove('border-red-500', 'dark:border-red-400');
+        
+        // Celebration effect
+        createConfetti();
+      } else {
+        resultDiv.innerHTML = `<span class="text-red-500 dark:text-red-400">✗ No Match</span>`;
+        resultDetails.textContent = `Similarity distance: ${formattedDistance} (above threshold of 0.60)`;
+        resultIconContainer.innerHTML = `<i class="fas fa-times-circle text-red-500 dark:text-red-400"></i>`;
+        resultIconContainer.className = 'w-16 h-16 rounded-full flex items-center justify-center mb-4 text-3xl bg-red-100 dark:bg-red-900 shake-mismatch';
+        resultCard.classList.add('border-red-500', 'dark:border-red-400');
+        resultCard.classList.remove('border-green-500', 'dark:border-green-400');
+      }
+
+      // Display model and method used
+      document.getElementById('modelUsed').textContent = `Model Used: ${model_name}`;
+      document.getElementById('methodUsed').textContent = `Distance Metric: ${distance_metric}`;
+
+      // Display similarity percentage and interpretation
+      similarityPercentageElem.textContent = `Similarity: ${similarityPercentage}%`;
+      similarityInterpretationElem.textContent = interpretation;
+
+      // Display threshold
+      thresholdValueElem.textContent = 'Threshold: 0.60';
+
+      // Display processing time
+      document.getElementById('processingTime').textContent = `Processing Time: ${processing_time} seconds`;
+
+      // Display summary likelihood
+      document.getElementById('summaryLikelihood').textContent = summary_likelihood;
+
+      // Display per-feature scores with progress bars
+      if (per_feature_scores) {
+        const features = ['eyes', 'nose', 'mouth', 'jaw'];
+        features.forEach(feature => {
+          const score = per_feature_scores[feature];
+          const percentage = Math.round(score * 100);
+          document.getElementById(`score${capitalize(feature)}`).textContent = `${percentage}%`;
+          document.getElementById(`progress${capitalize(feature)}`).style.width = `${percentage}%`;
+        });
+      }
+
+      // Display heatmap explanation
+      document.getElementById('heatmapExplanation').textContent = heatmap_explanation;
+
+      // Display similarity chart
+      displaySimilarityChart(distance);
+
+      // Show image previews if available
+      if (currentMode === 'upload') {
+        if (image1.files.length) {
+          previewResult1.src = URL.createObjectURL(image1.files[0]);
+          previewResult1.classList.remove('hidden');
+        }
+        if (image2.files.length) {
+          previewResult2.src = URL.createObjectURL(image2.files[0]);
+          previewResult2.classList.remove('hidden');
+        }
+      } else if (currentMode === 'camera') {
+        if (capturedImageBlob1) {
+          previewResult1.src = URL.createObjectURL(capturedImageBlob1);
+          previewResult1.classList.remove('hidden');
+        }
+        if (capturedImageBlob2) {
+          previewResult2.src = URL.createObjectURL(capturedImageBlob2);
+          previewResult2.classList.remove('hidden');
+        }
+      }
+    }
+
+    // Helper function to capitalize first letter
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
   </script>
 </body>
 </html>
