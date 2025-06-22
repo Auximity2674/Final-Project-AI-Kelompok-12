@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pelajari Lebih Lanjut - FaceSimilar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #0ea5e9 0%, #d946ef 100%);
+        }
+        .glass {
+            backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .dark .glass {
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .feature-card {
+            transition: all 0.3s ease;
+            transform: translateY(0);
+        }
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .dark .feature-card:hover {
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .floating-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        .floating-animation:nth-child(2) {
+            animation-delay: -2s;
+        }
+        .floating-animation:nth-child(3) {
+            animation-delay: -4s;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .progress-bar {
+            width: 0%;
+            transition: width 2s ease-in-out;
+        }
+        .progress-bar.animate {
+            width: 100%;
+        }
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        .tooltip-trigger:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+        .typewriter {
+            overflow: hidden;
+            border-right: 2px solid;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+        @keyframes typing {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+        @keyframes blink-caret {
+            from, to { border-color: transparent; }
+            50% { border-color: currentColor; }
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .accordion-content.open {
+            max-height: 200px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-200 transition-colors duration-300">
+    <!-- Background Decorations -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none">
+        <div class="floating-animation absolute top-20 left-10 w-16 h-16 bg-blue-200 dark:bg-blue-800 rounded-full opacity-20"></div>
+        <div class="floating-animation absolute top-40 right-20 w-12 h-12 bg-purple-200 dark:bg-purple-800 rounded-full opacity-20"></div>
+        <div class="floating-animation absolute bottom-40 left-1/4 w-20 h-20 bg-pink-200 dark:bg-pink-800 rounded-full opacity-20"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-8">
+                    <div class="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
+                        <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                        </svg>
+                    </div>
+                    <span class="text-xl font-bold text-gray-900 dark:text-white">FaceSimilar</span>
+                    <div class="hidden md:flex space-x-6">
+                        <a href="/" class="relative text-gray-700 dark:text-gray-300 font-semibold transition-colors before:absolute before:-bottom-1 before:left-0 before:h-0.5 before:w-full before:scale-x-0 before:origin-right before:bg-primary-500 before:transition-transform before:duration-300 hover:before:origin-left hover:before:scale-x-100 dark:before:bg-primary-400">Beranda</a>
+                        <a href="/checker" class="relative text-gray-700 dark:text-gray-300 font-semibold transition-colors before:absolute before:-bottom-1 before:left-0 before:h-0.5 before:w-full before:scale-x-0 before:origin-right before:bg-primary-500 before:transition-transform before:duration-300 hover:before:origin-left hover:before:scale-x-100 dark:before:bg-primary-400">Checker</a>
+                        <a href="/learn-more" class="relative text-gray-700 dark:text-gray-300 font-semibold transition-colors before:absolute before:-bottom-1 before:left-0 before:h-0.5 before:w-full before:scale-x-0 before:origin-right before:bg-primary-500 before:transition-transform before:duration-300 hover:before:origin-left hover:before:scale-x-100 dark:before:bg-primary-400">Pelajari Lebih Lanjut</a>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle" class="p-2 rounded-lg bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200">
+                        <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="pt-24 pb-12 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Hero Section -->
+        <section class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 typewriter">
+                <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    Cara Kerja FaceSimilar
+                </span>
+            </h1>
+            <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto leading-relaxed">
+                Platform AI terdepan yang menggunakan teknologi machine learning dan facial recognition untuk menganalisis kemiripan wajah dengan akurasi tinggi
+            </p>
+        </section>
+
+        <!-- Process Steps -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-gray-200">Proses Analisis</h2>
+            <div class="relative">
+                <!-- Progress Bar -->
+                <div class="absolute top-8 left-0 right-0 h-1 bg-gray-200 dark:bg-gray-700 rounded-full mx-8">
+                    <div id="progress-bar" class="progress-bar h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></div>
+                </div>
+                
+                <div class="grid md:grid-cols-3 gap-8 relative z-10">
+                    <!-- Step 1 -->
+                    <div class="feature-card glass rounded-xl p-6 text-center">
+                        <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Upload Gambar</h3>
+                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                            Unggah dua gambar wajah atau gunakan kamera untuk mengambil foto secara langsung
+                        </p>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="feature-card glass rounded-xl p-6 text-center">
+                        <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Analisis AI</h3>
+                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                            Model deep learning seperti ArcFace dan VGG-Face mengekstrak fitur wajah yang relevan
+                        </p>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="feature-card glass rounded-xl p-6 text-center">
+                        <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-3">Hasil Analisis</h3>
+                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                            Dapatkan persentase kemiripan, skor per fitur, dan visualisasi grafik yang mudah dipahami
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Information -->
+        <section class="mb-16">
+            <div class="glass rounded-xl p-8 shadow-lg">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <div>
+                        <h2 class="text-3xl font-bold mb-6 text-primary-600 dark:text-primary-400">Teknologi Canggih</h2>
+                        <div class="space-y-6">
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-lg mb-2">Deep Learning Models</h3>
+                                    <p class="text-gray-600 dark:text-gray-400">
+                                        Menggunakan model terdepan seperti ArcFace dan VGG-Face untuk ekstraksi fitur wajah yang akurat
+                                    </p>
+                                </div>
+                            </div>
+                            
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-lg mb-2">Keamanan Data Terjamin</h3>
+                                    <p class="text-gray-600 dark:text-gray-400">
+                                        Semua gambar diproses secara lokal dan tidak disimpan di server untuk menjaga privasi Anda
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0 w-8 h-8 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
+                                    <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h3 class="font-semibold text-lg mb-2">Analisis Real-time</h3>
+                                    <p class="text-gray-600 dark:text-gray-400">
+                                        Hasil analisis tersedia dalam hitungan detik dengan tingkat akurasi yang tinggi
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="relative">
+                        <div class="glass rounded-xl p-6 transform hover:scale-105 transition-transform duration-300">
+                            <div class="text-center">
+                                <div class="w-20 h-20 gradient-bg rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2-2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold mb-2">95%+</h3>
+                                <p class="text-gray-600 dark:text-gray-400">Tingkat Akurasi</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="mb-16">
+            <h2 class="text-3xl font-bold text-center mb-12 text-gray-800 dark:text-gray-200">Pertanyaan Umum</h2>
+            <div class="max-w-3xl mx-auto space-y-4">
+                <div class="glass rounded-xl overflow-hidden">
+                    <button class="accordion-trigger w-full text-left p-6 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 flex justify-between items-center">
+                        <span class="font-semibold">Bagaimana FaceSimilar menjaga keamanan data?</span>
+                        <svg class="w-5 h-5 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                            Semua gambar diproses secara lokal di perangkat Anda dan tidak pernah dikirim ke server eksternal. Data Anda tetap privat dan aman.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="glass rounded-xl overflow-hidden">
+                    <button class="accordion-trigger w-full text-left p-6 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 flex justify-between items-center">
+                        <span class="font-semibold">Seberapa akurat hasil analisis FaceSimilar?</span>
+                        <svg class="w-5 h-5 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                            FaceSimilar menggunakan model AI terdepan dengan tingkat akurasi lebih dari 95%, didukung oleh teknologi deep learning yang terus diperbarui.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="glass rounded-xl overflow-hidden">
+                    <button class="accordion-trigger w-full text-left p-6 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 flex justify-between items-center">
+                        <span class="font-semibold">Format gambar apa saja yang didukung?</span>
+                        <svg class="w-5 h-5 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="accordion-content px-6 pb-6">
+                        <p class="text-gray-600 dark:text-gray-400 leading-relaxed">
+                            FaceSimilar mendukung format gambar populer seperti JPG, PNG, WEBP, dan dapat mengolah gambar dengan resolusi hingga 4K untuk hasil terbaik.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA Section -->
+        <section class="text-center">
+            <div class="glass rounded-xl p-12">
+                <h2 class="text-3xl font-bold mb-6 text-gray-800 dark:text-gray-200">Siap Mencoba?</h2>
+                <p class="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+                    Mulai analisis kemiripan wajah dengan teknologi AI terdepan sekarang juga
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="/" class="tooltip-trigger relative inline-block px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-xl hover:from-blue-600 hover:to-purple-600 transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+                        Mulai Analisis
+                        <div class="tooltip absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap">
+                            Gratis dan mudah digunakan
+                        </div>
+                    </a>
+                    <a href="#" class="inline-block px-8 py-4 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-semibold rounded-xl hover:border-blue-500 hover:text-blue-500 dark:hover:text-blue-400 transition-all duration-300">
+                        Pelajari Lebih Lanjut
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const html = document.documentElement;
+        
+        themeToggle.addEventListener('click', () => {
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        });
+
+        // Load saved theme
+        if (localStorage.getItem('theme') === 'dark' || 
+            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            html.classList.add('dark');
+        }
+
+        // Progress Bar Animation
+        const progressBar = document.getElementById('progress-bar');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    progressBar.classList.add('animate');
+                }
+            });
+        });
+        observer.observe(progressBar);
+
+        // Accordion Functionality
+        const accordionTriggers = document.querySelectorAll('.accordion-trigger');
+        accordionTriggers.forEach(trigger => {
+            trigger.addEventListener('click', () => {
+                const content = trigger.nextElementSibling;
+                const icon = trigger.querySelector('svg');
+                
+                // Close all other accordions
+                accordionTriggers.forEach(otherTrigger => {
+                    if (otherTrigger !== trigger) {
+                        const otherContent = otherTrigger.nextElementSibling;
+                        const otherIcon = otherTrigger.querySelector('svg');
+                        otherContent.classList.remove('open');
+                        otherIcon.style.transform = 'rotate(0deg)';
+                    }
+                });
+                
+                // Toggle current accordion
+                content.classList.toggle('open');
+                icon.style.transform = content.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
+            });
+        });
+
+        // Smooth animations on scroll
+        const animateOnScroll = () => {
+            const elements = document.querySelectorAll('.feature-card');
+            elements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementVisible = 150;
+                
+                if (elementTop < window.innerHeight - elementVisible) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        };
+
+        // Initialize animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.feature-card');
+            elements.forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px)';
+                element.style.transition = 'all 0.6s ease';
+            });
+        });
+
+        window.addEventListener('scroll', animateOnScroll);
+        animateOnScroll(); // Run once on load
+    </script>
+</body>
+</html>
